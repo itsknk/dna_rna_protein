@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNA/RNA/Protein Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>DNA/RNA/Protein Translator</h1>
+    <form method="POST">
+        <label for="sequence_type">Select input type:</label>
+        <select name="sequence_type" id="sequence_type">
+            <option value="dna" {% if sequence_type == 'dna' %}selected{% endif %}>DNA</option>
+            <option value="rna" {% if sequence_type == 'rna' %}selected{% endif %}>RNA</option>
+        </select><br><br>
+        <label for="sequence_input">Enter sequence:</label><br>
+        <textarea name="sequence_input" id="sequence_input" required>{{ sequence_input }}</textarea><br>
+        <input type="checkbox" name="all_frames" id="all_frames" {% if all_frames %}checked{% endif %}>
+        <label for="all_frames">Translate all reading frames</label><br><br>
+        <input type="submit" value="Translate">
+    </form>
+    {% if rna_output %}
+    <h2>RNA Transcription:</h2>
+    <textarea readonly>{{ rna_output }}</textarea>
+    {% endif %}
+    {% if protein_output %}
+    <h2>Protein Translation:</h2>
+    {% for frame, protein in protein_output.items() %}
+    <h3>Frame {{ frame }}:</h3>
+    <textarea readonly>{{ protein }}</textarea>
+    {% endfor %}
+    {% endif %}
+</body>
+</html>
